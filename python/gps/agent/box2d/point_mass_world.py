@@ -1,7 +1,7 @@
 """ This file defines an environment for the Box2D PointMass simulator. """
 import numpy as np
 import Box2D as b2
-from framework import Framework
+from gps.agent.box2d.framework import Framework
 
 from gps.agent.box2d.settings import fwSettings
 from gps.proto.gps_pb2 import END_EFFECTOR_POINTS, END_EFFECTOR_POINT_VELOCITIES

@@ -24,7 +24,7 @@ This file contains the Framework for the Box2D GUI
 
 import Box2D as b2
 import pygame
-import framework
+from gps.agent.box2d.framework import FrameworkBase
 
 
 GUIEnabled = False
@@ -148,7 +148,7 @@ class PygameDraw(b2.b2DrawExtended):
                                 vertices, 0)
             pygame.draw.polygon(self.surface, color.bytes, vertices, 1)
 
-class PygameFramework(framework.FrameworkBase):
+class PygameFramework(FrameworkBase):
     """
     This class is the framework for running the simulation
     """

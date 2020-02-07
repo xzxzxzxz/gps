@@ -1,5 +1,5 @@
 """ This file defines the sample list wrapper and sample writers. """
-import cPickle
+import pickle
 import logging
 
 import numpy as np
@@ -65,7 +65,7 @@ class PickleSampleWriter(object):
     def write(self, samples):
         """ Write samples to data file. """
         with open(self._data_file, 'wb') as data_file:
-            cPickle.dump(data_file, samples)
+            pickle.dump(data_file, samples)
 
 
 class SysOutWriter(object):
