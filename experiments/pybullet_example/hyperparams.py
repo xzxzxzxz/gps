@@ -15,7 +15,7 @@ from gps.algorithm.dynamics.dynamics_lr_prior import DynamicsLRPrior
 from gps.algorithm.dynamics.dynamics_prior_gmm import DynamicsPriorGMM
 from gps.algorithm.traj_opt.traj_opt_lqr_python import TrajOptLQRPython
 from gps.algorithm.policy.lin_gauss_init import init_pd
-from gps.proto.gps_pb2 import ALL_STATES, ACTION
+from gps.proto.gps_pb2 import ALL_STATES, ACTION, JOINT_ANGLES
 from gps.gui.config import generate_experiment_info
 
 SENSOR_DIMS = {
@@ -46,6 +46,9 @@ agent = {
     'x0': np.array([ 5.32117332e-01, -1.10671468e-03,  4.52298438e-01,  3.14129037e+00,
                      1.43835457e-03, -3.14137140e+00, -1.04033291e-01,  6.11723252e-02,
                      -1.32389020e+00]),
+    'target_state': np.array([ 5.32117332e-01, -1.10671468e-03,  4.52298438e-01,  3.14129037e+00,
+                               1.43835457e-03, -3.14137140e+00, -1.04033291e-01,  6.11723252e-02,
+                               -1.32389020e+00]),
     'rk': 0,
     'dt': 0.05,
     'substeps': 1,
@@ -79,6 +82,12 @@ action_cost = {
 
 state_cost = {
     'type': CostState,
+    'data_types': {
+        ALL_STATES: {
+            'wp': np.array([1, 1, 1, 1, 1, 1, 1, 1, 1]),
+            'target_state': agent["target_state"],
+        }
+    }
 }
 
 algorithm['cost'] = {
