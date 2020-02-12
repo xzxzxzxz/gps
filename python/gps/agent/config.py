@@ -77,4 +77,5 @@ AGENT_BOX2D = {
 }
 
 AGENT_PYBULLET = {
+    'render': True,
 }

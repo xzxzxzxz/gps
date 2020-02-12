@@ -16,7 +16,7 @@ import traceback
 
 # Add gps/python to path so that imports work.
 sys.path.append('/'.join(str.split(__file__, '/')[:-2]))
-# from gps.gui.gps_training_gui import GPSTrainingGUI
+from gps.gui.gps_training_gui import GPSTrainingGUI
 from gps.utility.data_logger import DataLogger
 from gps.sample.sample_list import SampleList
 
@@ -82,7 +82,6 @@ class GPSMain(object):
             traceback.print_exception(*sys.exc_info())
         finally:
             self._end()
-            print("finished everything!")
 
     def test_policy(self, itr, N):
         """

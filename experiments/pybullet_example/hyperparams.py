@@ -19,8 +19,8 @@ from gps.proto.gps_pb2 import ALL_STATES, ACTION, JOINT_ANGLES
 from gps.gui.config import generate_experiment_info
 
 SENSOR_DIMS = {
-    ALL_STATES: 9,
-    ACTION: 3
+    ALL_STATES: 2,
+    ACTION: 2
 }
 
 BASE_DIR = '/'.join(str.split(gps_filepath, '/')[:-2])
@@ -41,21 +41,17 @@ if not os.path.exists(common['data_files_dir']):
 
 agent = {
     'type': AgentPyBullet,
-    "taskname" : 'KukaBulletEnv-v0',
-    'render' : False,
-    'x0': np.array([ 5.32117332e-01, -1.10671468e-03,  4.52298438e-01,  3.14129037e+00,
-                     1.43835457e-03, -3.14137140e+00, -1.04033291e-01,  6.11723252e-02,
-                     -1.32389020e+00]),
-    'target_state': np.array([ 5.32117332e-01, -1.10671468e-03,  4.52298438e-01,  3.14129037e+00,
-                               1.43835457e-03, -3.14137140e+00, -1.04033291e-01,  6.11723252e-02,
-                               -1.32389020e+00]),
+    "taskname" : 'RacecarBulletEnv-v0',
+    'render' : True,
+    'x0': np.array([4.80247641e+00, -1.06256311e-05]),
+    'target_state': np.array([0, 0]),
     'rk': 0,
     'dt': 0.05,
     'substeps': 1,
     'conditions': common['conditions'],
     'pos_body_idx': np.array([]),
     'pos_body_offset': np.array([]),
-    'T': 100,
+    'T': 10,
     'sensor_dims': SENSOR_DIMS,
     'state_include': [ALL_STATES],
     'obs_include': [],
@@ -68,7 +64,7 @@ algorithm = {
 
 algorithm['init_traj_distr'] = {
     'type': init_pd,
-    'init_var': 5.0,
+    'init_var': 0.5,
     'pos_gains': 0.0,
     'dQ': SENSOR_DIMS[ACTION],
     'dt': agent['dt'],
@@ -77,14 +73,14 @@ algorithm['init_traj_distr'] = {
 
 action_cost = {
     'type': CostAction,
-    'wu': np.array([5e-5, 5e-5, 5e-5])
+    'wu': np.array([5e-5, 5e-5])
 }
 
 state_cost = {
     'type': CostState,
     'data_types': {
         ALL_STATES: {
-            'wp': np.array([1, 1, 1, 1, 1, 1, 1, 1, 1]),
+            'wp': np.array([1, 1]),
             'target_state': agent["target_state"],
         }
     }
@@ -115,11 +111,11 @@ algorithm['policy_opt'] = {}
 
 config = {
     'iterations': 10,
-    'num_samples': 5,
+    'num_samples': 20,
     'common': common,
     'verbose_trials': 0,
     'agent': agent,
-    'gui_on': False,
+    'gui_on': True,
     'algorithm': algorithm,
     'dQ': algorithm['init_traj_distr']['dQ'],
 }
