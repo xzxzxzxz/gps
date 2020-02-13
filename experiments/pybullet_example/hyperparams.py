@@ -43,7 +43,7 @@ agent = {
     'type': AgentPyBullet,
     "taskname" : 'RacecarBulletEnv-v0',
     'render' : True,
-    'x0': np.array([4.80247641e+00, -1.06256311e-05]),
+    'x0': np.array([0, 0]),
     'target_state': np.array([0, 0]),
     'rk': 0,
     'dt': 0.05,
@@ -51,7 +51,7 @@ agent = {
     'conditions': common['conditions'],
     'pos_body_idx': np.array([]),
     'pos_body_offset': np.array([]),
-    'T': 10,
+    'T': 20,
     'sensor_dims': SENSOR_DIMS,
     'state_include': [ALL_STATES],
     'obs_include': [],
@@ -111,7 +111,7 @@ algorithm['policy_opt'] = {}
 
 config = {
     'iterations': 10,
-    'num_samples': 20,
+    'num_samples': 50,
     'common': common,
     'verbose_trials': 0,
     'agent': agent,

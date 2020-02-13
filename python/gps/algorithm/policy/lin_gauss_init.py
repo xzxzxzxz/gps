@@ -135,7 +135,7 @@ def init_pd(hyperparams):
             ]), [T, 1, 1]
         )
     else:
-        K = np.tile(np.random.randn(dU, dX), [T, 1, 1])
+        K = np.tile(np.eye(dU) * Kp, [T, 1, 1])
     k = np.tile(-K[0, :, :].dot(x0), [T, 1])
     PSig = config['init_var'] * np.tile(np.eye(dU), [T, 1, 1])
     cholPSig = np.sqrt(config['init_var']) * np.tile(np.eye(dU), [T, 1, 1])
