@@ -79,3 +79,7 @@ AGENT_BOX2D = {
 AGENT_PYBULLET = {
     'render': True,
 }
+
+AGENT_CARLA = {
+    'render': True,
+}
