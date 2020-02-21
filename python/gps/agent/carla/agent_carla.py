@@ -12,7 +12,7 @@ from gps.agent.agent_utils import generate_noise, setup
 from gps.agent.config import AGENT_CARLA
 from gps.proto.gps_pb2 import ACTION
 from gps.sample.sample import Sample
-from gps.proto.gps_pb2 import ALL_STATES
+from gps.proto.gps_pb2 import ALL_STATES, TRACKING, OBS_AVOI
 
 
 class AgentCarla(Agent):
@@ -84,7 +84,8 @@ class AgentCarla(Agent):
             noisy: Whether or not to use noise during sampling.
         """
         obs_carla = self._world[condition].reset()
-        CL_X = {ALL_STATES: obs_carla['state']}
+        CL_X = {TRACKING: obs_carla['tracking'],
+                OBS_AVOI: obs_carla['obs_avoi']}
         new_sample = self._init_sample(CL_X)
         U = np.zeros([self.T, self.dU])
         if noisy:
@@ -98,7 +99,8 @@ class AgentCarla(Agent):
             if (t + 1) < self.T:
                 for _ in range(self._hyperparams['substeps']):
                     obs_carla, _, _, _ = self._world[condition].step(U[t, :])
-                CL_X = {ALL_STATES: obs_carla['state']}
+                CL_X = {TRACKING: obs_carla['tracking'],
+                        OBS_AVOI: obs_carla['obs_avoi']}
                 self._set_sample(new_sample, CL_X, t)
         new_sample.set(ACTION, U)
         if save:

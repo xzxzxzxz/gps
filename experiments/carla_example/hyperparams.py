@@ -15,11 +15,14 @@ from gps.algorithm.dynamics.dynamics_lr_prior import DynamicsLRPrior
 from gps.algorithm.dynamics.dynamics_prior_gmm import DynamicsPriorGMM
 from gps.algorithm.traj_opt.traj_opt_lqr_python import TrajOptLQRPython
 from gps.algorithm.policy.lin_gauss_init import init_pd
-from gps.proto.gps_pb2 import ALL_STATES, ACTION
+from gps.proto.gps_pb2 import ALL_STATES, ACTION, TRACKING, OBS_AVOI
 from gps.gui.config import generate_experiment_info
+from gps.algorithm.cost.cost_utils import evall1l2term, evalrelu
 
 SENSOR_DIMS = {
-    ALL_STATES: 3,
+    ALL_STATES: 5,
+    TRACKING: 3,
+    OBS_AVOI: 2,
     ACTION: 2
 }
 
@@ -42,8 +45,7 @@ if not os.path.exists(common['data_files_dir']):
 agent = {
     'type': AgentCarla,
     'render': True,
-    'x0': np.array([0, 0, 5]),
-    'target_state': np.array([0, 0, 5]),
+    'x0': np.array([0, 0, 5, 10, 0]),
     'rk': 0,
     'dt': 0.05,
     'substeps': 1,
@@ -52,7 +54,7 @@ agent = {
     'pos_body_offset': np.array([]),
     'T': 100,
     'sensor_dims': SENSOR_DIMS,
-    'state_include': [ALL_STATES],
+    'state_include': [TRACKING, OBS_AVOI],
     'obs_include': [],
 }
 
@@ -78,9 +80,15 @@ action_cost = {
 state_cost = {
     'type': CostState,
     'data_types': {
-        ALL_STATES: {
+        TRACKING: {
             'wp': np.array([1, 1, 1]),
-            'target_state': agent["target_state"],
+            'target_state': np.array([0, 0, 5]),
+            'penalty_term': evall1l2term
+        },
+        OBS_AVOI: {
+            'wp': np.array([1, 1]),
+            'target_state': np.array([10, 0]),
+            'penalty_term': evalrelu
         }
     }
 }

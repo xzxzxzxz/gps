@@ -148,3 +148,37 @@ def evallogl2term(wp, d, Jd, Jdd, l1, l2, alpha):
     lxx += 0.5 * sec + 0.5 * np.transpose(sec, [0, 2, 1])
 
     return l, lx, lxx
+
+
+def evalrelu(wp, d, Jd, Jdd, l1, l2, alpha):
+    """
+    Evaluate and compute derivatives for relu penalty.
+    loss = 0              if d[0] > 0
+    loss = -d[0] + d[1]   if d[0] < 0
+    Args:
+        wp: T x D matrix with weights for each dimension and time step.
+        d: T x D states to evaluate norm on.
+        Jd: T x D x Dx Jacobian - derivative of d with respect to state.
+        Jdd: T x D x Dx x Dx Jacobian - 2nd derivative of d with respect
+            to state.
+        l1: l1 loss weight.
+        l2: l2 loss weight.
+        alpha: Constant added in square root.
+    """
+    # Get trajectory length.
+    T, _ = d.shape
+    dim = wp.shape[1]
+
+    # Compute scaled quantities.
+    sqrtwp = np.sqrt(wp)
+    dsclsq = d * sqrtwp
+    dscl = d * wp
+    dscls = d * (wp ** 2)
+
+    bool = d[:, 0] > 0
+    l = dscl[:, 1] - dscl[:, 0]
+    l[bool] = 0
+    lx = np.tile(np.array([-1, 1]), [T, 1])
+    lx[bool] = np.zeros(dim)
+    lxx = np.zeros([T, dim, dim])
+    return l, lx, lxx
