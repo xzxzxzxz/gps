@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../CARLA_0.9.6/.idea/CARLA_0.9.6.iml" filepath="$PROJECT_DIR$/../CARLA_0.9.6/.idea/CARLA_0.9.6.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/gps.iml" filepath="$PROJECT_DIR$/.idea/gps.iml" />
     </modules>
   </component>

@@ -26,6 +26,7 @@ class AgentCarla(Agent):
         Agent.__init__(self, config)
         self._setup_conditions()
         params = {
+            'x0': 320,
             'number_of_vehicles': 0,
             'number_of_walkers': 0,
             'display_size': 256,  # screen size of bird-eye render
@@ -69,8 +70,11 @@ class AgentCarla(Agent):
             filename: Path to XML file containing the world information.
         """
         self.x0 = self._hyperparams["x0"]
-        self._world = [gym.make('carla-v0', params=params)
-                       for _ in range(self._hyperparams['conditions'])]
+        self._world = []
+        for i in range(self._hyperparams['conditions']):
+            params['x0'] = self.x0[i]
+            world = gym.make('carla-v0', params=params)
+            self._world.append(world)
 
     def sample(self, policy, condition, verbose=True, save=True, noisy=True):
         """
