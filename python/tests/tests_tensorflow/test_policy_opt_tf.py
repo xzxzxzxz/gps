@@ -3,7 +3,8 @@ import os
 import os.path
 import sys
 import numpy as np
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 
 # Add gps/python to path so that imports work.
 gps_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', ''))

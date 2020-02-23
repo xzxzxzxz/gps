@@ -1,6 +1,7 @@
 """ This file provides an example tensorflow network used to define a policy. """
 
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 from gps.algorithm.policy_opt.tf_utils import TfMap
 import numpy as np
 
@@ -16,7 +17,7 @@ def init_bias(shape, name=None):
 def batched_matrix_vector_multiply(vector, matrix):
     """ computes x^T A in mini-batches. """
     vector_batch_as_matricies = tf.expand_dims(vector, [1])
-    mult_result = tf.batch_matmul(vector_batch_as_matricies, matrix)
+    mult_result = tf.matmul(vector_batch_as_matricies, matrix)
     squeezed_result = tf.squeeze(mult_result, [1])
     return squeezed_result
 

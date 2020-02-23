@@ -175,7 +175,7 @@ def evalrelu(wp, d, Jd, Jdd, l1, l2, alpha):
     dscl = d * wp
     dscls = d * (wp ** 2)
 
-    bool = d[:, 0] > 0
+    bool = np.logical_or(d[:, 0] > 15, d[:, 0] < -5)
     l = dscl[:, 1] - dscl[:, 0]
     l[bool] = 0
     lx = np.tile(np.array([-1, 1]), [T, 1])

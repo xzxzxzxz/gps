@@ -45,7 +45,7 @@ if not os.path.exists(common['data_files_dir']):
 agent = {
     'type': AgentCarla,
     'render': True,
-    'x0': np.array([0, 0, 5, 10, 0]),
+    'x0': 280,
     'rk': 0,
     'dt': 0.05,
     'substeps': 1,
@@ -65,7 +65,7 @@ algorithm = {
 
 algorithm['init_traj_distr'] = {
     'type': init_pd,
-    'init_var': 0.001,
+    'init_var': 0.5,
     'pos_gains': 1,
     'dQ': SENSOR_DIMS[ACTION],
     'dt': agent['dt'],
@@ -81,13 +81,13 @@ state_cost = {
     'type': CostState,
     'data_types': {
         TRACKING: {
-            'wp': np.array([500, 500, 1]),
-            'target_state': np.array([0, 0, 5]),
+            'wp': np.array([1, 1e3, 500]),
+            'target_state': np.array([0, 0, 3]),
             'penalty_term': evall1l2term
         },
         OBS_AVOI: {
             'wp': np.array([1, 1]),
-            'target_state': np.array([10, 0]),
+            'target_state': np.array([0, 0]),
             'penalty_term': evalrelu
         }
     }

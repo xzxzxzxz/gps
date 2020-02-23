@@ -20,6 +20,7 @@ from gps.algorithm.policy.lin_gauss_init import init_pd
 from gps.gui.config import generate_experiment_info
 from gps.proto.gps_pb2 import ALL_STATES, TRACKING, OBS_AVOI, ACTION
 from gps.algorithm.cost.cost_utils import evall1l2term, evalrelu
+from gps.algorithm.policy_opt.tf_model_example import tf_network
 
 SENSOR_DIMS = {
     ALL_STATES: 5,
@@ -38,7 +39,7 @@ common = {
     'experiment_dir': EXP_DIR,
     'data_files_dir': EXP_DIR + 'data_files/',
     'log_filename': EXP_DIR + 'log.txt',
-    'conditions': 3,
+    'conditions': 1,
 }
 
 if not os.path.exists(common['data_files_dir']):
@@ -46,7 +47,7 @@ if not os.path.exists(common['data_files_dir']):
 
 agent = {
     'type': AgentCarla,
-    'x0': [320, 250, 220],
+    'x0': [320],
     'rk': 0,
     'dt': 0.05,
     'substeps': 1,
@@ -127,6 +128,12 @@ algorithm['traj_opt'] = {
 algorithm['policy_opt'] = {
     'type': PolicyOptTf,
     'weights_file_prefix': EXP_DIR + 'policy',
+    'network_params': {
+        'obs_include': [TRACKING, OBS_AVOI],
+        'sensor_dims': SENSOR_DIMS
+    },
+    'iterations': 3000,
+    'network_model': tf_network
 }
 
 algorithm['policy_prior'] = {
